@@ -45,7 +45,7 @@ Open it with the **Shakti AI** button or `Ctrl/⌘+E`. Try:
 
 ## Build it yourself
 
-You need [Node.js](https://nodejs.org) 20 or newer.
+You need [Node.js](https://nodejs.org) **22.12 or newer** (the current LTS works). Check with `node -v`.
 
 ```bash
 git clone https://github.com/geniusbridgetech/shakti-browser.git
