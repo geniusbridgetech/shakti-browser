@@ -1,0 +1,55 @@
+appId: in.shakti.browser
+productName: Shakti Browser
+copyright: Copyright © 2026 Shakti Browser Team
+directories:
+  output: dist
+  buildResources: build
+files:
+  - src/**/*
+  - package.json
+  - "!**/*.map"
+protocols:
+  - name: Web
+    schemes: [http, https]
+
+mac:
+  category: public.app-category.productivity
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+    - target: zip
+      arch: [x64, arm64]
+  extendInfo:
+    NSCameraUsageDescription: Websites you visit can ask to use your camera.
+    NSMicrophoneUsageDescription: Websites you visit can ask to use your microphone.
+dmg:
+  title: Shakti Browser
+
+win:
+  target:
+    - target: nsis
+      arch: [x64, arm64]
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Shakti Browser
+
+linux:
+  category: Network;WebBrowser
+  executableName: shakti-browser
+  synopsis: Chrome-style browser with a built-in AI agent
+  mimeTypes:
+    - text/html
+    - x-scheme-handler/http
+    - x-scheme-handler/https
+  target:
+    - target: AppImage
+      arch: [x64, arm64]
+    - target: deb
+      arch: [x64, arm64]
+    - target: rpm
+      arch: [x64]
+deb:
+  depends: [libnss3, libatk-bridge2.0-0, libgtk-3-0, libxss1, libasound2 | libasound2t64]

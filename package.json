@@ -1,0 +1,32 @@
+{
+  "name": "shakti-browser",
+  "productName": "Shakti Browser",
+  "version": "1.0.0",
+  "description": "A Chrome-style web browser with a built-in AI agent, for Windows, macOS and Linux.",
+  "main": "src/main/main.js",
+  "author": {
+    "name": "Shakti Browser Team",
+    "email": "geniusbridgetech@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/geniusbridgetech/shakti-browser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geniusbridgetech/shakti-browser.git"
+  },
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check src/main/main.js && node --check src/main/agent.js && node --check src/main/page-tools.js && node --check src/preload/preload.js && node --check src/renderer/browser.js && node --check src/renderer/agent.js",
+    "dist": "electron-builder",
+    "dist:linux": "electron-builder --linux",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.10.0"
+  },
+  "devDependencies": {
+    "electron": "45.2.2",
+    "electron-builder": "26.18.0"
+  }
+}

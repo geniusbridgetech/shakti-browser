@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data: blob:; connect-src 'none'; frame-src 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shakti Browser</title>
+  <link rel="stylesheet" href="browser.css">
+</head>
+<body>
+  <!-- Icon sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></symbol>
+      <symbol id="i-forward" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></symbol>
+      <symbol id="i-reload" viewBox="0 0 24 24"><path d="M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></symbol>
+      <symbol id="i-stop" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3 2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="m22 9.24-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></symbol>
+      <symbol id="i-star-filled" viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></symbol>
+      <symbol id="i-more" viewBox="0 0 24 24"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6A5 5 0 0 0 7 6v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zM9 6a3 3 0 0 1 6 0v2H9V6zm9 14H6V10h12v10zm-6-3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></symbol>
+      <symbol id="i-history" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 2.05 4.95l-1.42 1.42A9 9 0 1 0 13 3zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.99 7.99 0 0 1 5.08 16zm2.95-8H5.08a7.99 7.99 0 0 1 4.33-3.56A15.65 15.65 0 0 0 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></symbol>
+      <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2c.4 3.9 1.6 6.5 3.4 8.1C17.2 11.7 19.5 12.4 22 12c-2.5.4-4.8 1.1-6.6 2.7C13.6 16.3 12.4 18.9 12 22c-.4-3.1-1.6-5.7-3.4-7.3C6.8 13.1 4.5 12.4 2 12c2.5.4 4.8-.3 6.6-1.9C10.4 8.5 11.6 5.9 12 2z"/></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></symbol>
+      <symbol id="i-newchat" viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm0 14H5.17L4 17.17V4h16v12zm-9-3h2v-2h2V9h-2V7h-2v2H9v2h2z"/></symbol>
+      <symbol id="i-min" viewBox="0 0 24 24"><path d="M6 12.5h12v1H6z"/></symbol>
+      <symbol id="i-max" viewBox="0 0 24 24"><path d="M6.5 6.5h11v11h-11z" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+      <symbol id="i-restore" viewBox="0 0 24 24"><path d="M8.5 8.5h9v9h-9z M6.5 15.5v-9h9" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24"><path d="M19.14 12.94a7.07 7.07 0 0 0 .06-.94c0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.47.47 0 0 0-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></symbol>
+      <symbol id="i-incognito" viewBox="0 0 24 24"><path d="M17.5 11.75c-1.9 0-3.46 1.39-3.7 3.2a3.67 3.67 0 0 0-3.6 0 3.74 3.74 0 1 0 .08 1.5 2.17 2.17 0 0 1 3.44 0 3.75 3.75 0 1 0 3.78-4.7zM6.5 17.5a2.25 2.25 0 1 1 0-4.5 2.25 2.25 0 0 1 0 4.5zm11 0a2.25 2.25 0 1 1 0-4.5 2.25 2.25 0 0 1 0 4.5zM22 10.5H2V12h20v-1.5zm-6.47-7.87A1 1 0 0 0 14.4 2L12 3.5 9.6 2a1 1 0 0 0-1.13.63L6 9h12l-2.47-6.37z"/></symbol>
+      <symbol id="i-warn" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></symbol>
+    </defs>
+  </svg>
+
+  <div id="browser">
+    <!-- ================= TAB STRIP (also the window title bar) ================= -->
+    <header class="tabstrip" id="tabstrip">
+      <div class="incognito-badge" id="incognito-badge" hidden title="Incognito"><svg><use href="#i-incognito"/></svg></div>
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <button class="newtab-btn" id="btn-newtab" title="New tab" aria-label="New tab"><svg><use href="#i-plus"/></svg></button>
+      <div class="tabstrip-drag"></div>
+      <div class="window-controls" id="window-controls">
+        <button data-win="minimize" title="Minimize" aria-label="Minimize"><svg><use href="#i-min"/></svg></button>
+        <button data-win="maximize" id="btn-maximize" title="Maximize" aria-label="Maximize"><svg><use href="#i-max"/></svg></button>
+        <button data-win="close" class="win-close" title="Close" aria-label="Close"><svg><use href="#i-close"/></svg></button>
+      </div>
+    </header>
+
+    <!-- ================= TOOLBAR ================= -->
+    <nav class="toolbar">
+      <button class="icon-btn" id="btn-back" title="Back" aria-label="Back"><svg><use href="#i-back"/></svg></button>
+      <button class="icon-btn" id="btn-forward" title="Forward" aria-label="Forward"><svg><use href="#i-forward"/></svg></button>
+      <button class="icon-btn" id="btn-reload" title="Reload" aria-label="Reload"><svg><use href="#i-reload"/></svg></button>
+      <button class="icon-btn" id="btn-home" title="Home" aria-label="Home"><svg><use href="#i-home"/></svg></button>
+
+      <div class="omnibox" id="omnibox">
+        <button class="omni-chip" id="site-info" title="View site information"><svg><use href="#i-info"/></svg></button>
+        <input id="omnibox-input" type="text" spellcheck="false" autocomplete="off" placeholder="Search Google or type a URL" aria-label="Address and search bar">
+        <span class="zoom-chip" id="zoom-chip" hidden></span>
+        <button class="icon-btn small" id="btn-star" title="Bookmark this tab" aria-label="Bookmark this tab"><svg><use href="#i-star"/></svg></button>
+        <div class="omni-suggest" id="omni-suggest" role="listbox"></div>
+      </div>
+
+      <button class="icon-btn" id="btn-downloads" title="Downloads" aria-label="Downloads" hidden><svg><use href="#i-download"/></svg><span class="dl-ring" id="dl-ring"></span></button>
+      <button class="agent-btn" id="btn-agent" title="Shakti AI" aria-label="Open Shakti AI">
+        <svg><use href="#i-sparkle"/></svg><span>Shakti AI</span>
+      </button>
+      <button class="icon-btn" id="btn-menu" title="Customize and control Shakti Browser" aria-label="Menu"><svg><use href="#i-more"/></svg></button>
+    </nav>
+
+    <!-- ================= BOOKMARKS BAR ================= -->
+    <div class="bookmarks-bar" id="bookmarks-bar"></div>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <div class="views" id="views">
+        <div class="findbar" id="findbar" hidden>
+          <input id="find-input" type="text" placeholder="Find in page" spellcheck="false">
+          <span id="find-count"></span>
+          <button class="icon-btn small" id="find-prev" title="Previous"><svg><use href="#i-up"/></svg></button>
+          <button class="icon-btn small" id="find-next" title="Next"><svg><use href="#i-down"/></svg></button>
+          <button class="icon-btn small" id="find-close" title="Close"><svg><use href="#i-close"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ================= AI AGENT SIDE PANEL ================= -->
+      <aside class="agent-panel" id="agent-panel" hidden aria-label="Shakti AI">
+        <div class="agent-head">
+          <div class="agent-title"><svg><use href="#i-sparkle"/></svg><span>Shakti AI</span><span class="agent-mode" id="agent-mode">…</span></div>
+          <button class="icon-btn small" id="agent-new" title="New chat"><svg><use href="#i-newchat"/></svg></button>
+          <button class="icon-btn small" id="agent-close" title="Close"><svg><use href="#i-close"/></svg></button>
+        </div>
+        <div class="agent-log" id="agent-log">
+          <div class="agent-welcome" id="agent-welcome">
+            <div class="agent-orb"><svg><use href="#i-sparkle"/></svg></div>
+            <h2>How can I help you browse?</h2>
+            <p>I can read this page, answer questions, search the web, and do multi-step tasks like opening links and filling search boxes.</p>
+            <div class="agent-suggestions">
+              <button data-prompt="Summarize this page">Summarize this page</button>
+              <button data-prompt="What are the key points on this page?">Key points on this page</button>
+              <button data-prompt="Search the web for the latest ISRO missions and summarize the top result">Research: latest ISRO missions</button>
+              <button data-prompt="Open wikipedia.org">Open wikipedia.org</button>
+            </div>
+          </div>
+        </div>
+        <form class="agent-input" id="agent-form">
+          <textarea id="agent-text" rows="1" placeholder="Ask Shakti AI or give it a task…"></textarea>
+          <button type="submit" class="agent-send" id="agent-send" title="Send" aria-label="Send"><svg><use href="#i-send"/></svg></button>
+        </form>
+        <div class="agent-foot" id="agent-foot"></div>
+      </aside>
+    </div>
+
+    <!-- ================= MENU ================= -->
+    <div class="menu" id="menu" hidden role="menu">
+      <button data-cmd="new-tab"><span>New tab</span><kbd data-k="T"></kbd></button>
+      <button data-cmd="new-window"><span>New window</span><kbd data-k="N"></kbd></button>
+      <button data-cmd="new-incognito"><span>New Incognito window</span><kbd data-k="Shift+N"></kbd></button>
+      <hr>
+      <button data-cmd="history"><span>History</span><kbd data-k="H"></kbd></button>
+      <button data-cmd="downloads"><span>Downloads</span><kbd data-k="J"></kbd></button>
+      <button data-cmd="bookmarks"><span>Bookmarks</span><kbd data-k="Shift+O"></kbd></button>
+      <hr>
+      <div class="menu-zoom"><span>Zoom</span><button data-cmd="zoom-out" data-keep>−</button><span id="menu-zoom-val">100%</span><button data-cmd="zoom-in" data-keep>+</button><button data-cmd="fullscreen" title="Full screen">⛶</button></div>
+      <hr>
+      <button data-cmd="print"><span>Print…</span><kbd data-k="P"></kbd></button>
+      <button data-cmd="find"><span>Find…</span><kbd data-k="F"></kbd></button>
+      <button data-cmd="save-as"><span>Save page as…</span><kbd></kbd></button>
+      <button data-cmd="toggle-agent"><span>Shakti AI agent</span><kbd data-k="E"></kbd></button>
+      <button data-cmd="devtools"><span>Developer tools</span><kbd data-k="Shift+I"></kbd></button>
+      <hr>
+      <button data-cmd="settings"><span>Settings</span><kbd></kbd></button>
+      <button data-cmd="about"><span>About Shakti Browser</span><kbd></kbd></button>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+  </div>
+
+  <script src="browser.js"></script>
+  <script src="agent.js"></script>
+</body>
+</html>
