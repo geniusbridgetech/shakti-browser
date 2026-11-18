@@ -23,7 +23,9 @@ jobs:
           - os: windows-latest
             target: --win
             name: windows
-          - os: macos-latest
+          # Intel runner: the Apple Silicon (macos-latest) pool is often out of
+          # capacity. It still builds both arm64 and x64 apps.
+          - os: macos-15-intel
             target: --mac
             name: macos
           - os: ubuntu-latest
